@@ -1,0 +1,27 @@
+* {
+
+
+
+
+
+    margin: 0;
+
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;                                                    
+}
+#canvas {
+    width: 100vw;
+    height: 100vh;
+    background: #171719;
+}
+@font-face{
+ font-family:"Ubuntu";
+ src:url("Fonts/Ubuntu-Bold.ttf");
+}
