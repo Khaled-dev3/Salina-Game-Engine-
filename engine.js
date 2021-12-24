@@ -32,11 +32,18 @@ document.addEventListener('keydown', function(e){
     keyboard.right_key = true
     console.log('right')
   }
+  if(e.keyCode == 38){
+    keyboard.up_key = true
+  }
+  if(e.keyCode == 40){
+    keyboard.down_key = true
+  }
 })
 document.addEventListener('keyup', function(){
   keyboard.left_key = false
   keyboard.up_key = false
   keyboard.right_key = false
+  keyboard.down_key = false
 })
 // dt
 function tick() {
@@ -48,7 +55,7 @@ var now = Date.now();
 // circle
 let isrectcolliding = false
 export class Circluarobject{
-  constructor(x, y, raduis, speed, gravity, color, distance, jump, velocity){
+  constructor(x, y, raduis, speed, gravity, color, distance, jump){
     this.x = x
     this.y = y
     this.raduis = raduis
@@ -57,21 +64,10 @@ export class Circluarobject{
     this.color = color
     this.distance = distance
     this.jump = jump
-    this.velocity = velocity
   }
   update(rectangle) {
     this.y += this.gravity
-    if(this.y > canvas.height){
-      this.y -= this.gravity
-    }
-    if(this.y > rectangle.y - 47){
-      isrectcolliding = true
-    }else{
-      isrectcolliding = false
-    }
-    if(isrectcolliding){
-      this.y -= this.gravity
-    }
+    
    /* if(this.y > platform.y){
       this.y -= this.gravity
       keyboard.up_key = true
@@ -97,16 +93,17 @@ export class Circluarobject{
       this.y -= this.jump
     }
     if(keyboard.left_key){
-      this.x -= this.velocity
+      this.x -= this.speed
     }
     if(keyboard.right_key){
-      this.x += this.velocity
+      this.x += this.speed
+      console.log('right')
     }
   }
 }
 //rectangle
 export class Rectangularobject{
-  constructor(x, y, width, height, color, speed, gravity, jump, velocity){
+  constructor(x, y, width, height, color, speed, gravity, jump){
     this.x = x
     this.y = y
     this.width = width
@@ -115,7 +112,6 @@ export class Rectangularobject{
     this.speed = speed
     this.gravity = gravity
     this.jump = jump 
-    this.velocity = velocity
   }
   update() {
     this.y += this.gravity
@@ -132,24 +128,24 @@ export class Rectangularobject{
       this.y -= this.jump
     }
     if(keyboard.left_key){
-      this.x -= this.velocity
+      this.x -= this.speed
     }
     if(keyboard.right_key){
-      this.x += this.velocity
+      this.x += this.speed
     }
   }
-  addTopDownMovement(){
+  add_Top_Down_Movement(){
     if(keyboard.up_key){
       this.y -= this.jump
     }
     if(keyboard.left_key){
-      this.x -= this.velocity
+      this.x -= this.speed
     }
     if(keyboard.right_key){
-      this.x += this.velocity
+      this.x += this.speed
     }
     if(keyboard.down_key){
-      this.y += this.velocity
+      this.y += this.speed
     }
   }
 }
@@ -215,4 +211,36 @@ function deletetext(sec){
   setInterval(drawtext, sec, function(){
     c.clearRect(0, 0, canvas.width, canvas.height)
   })
+}
+//resize issues(fixed)
+window.addEventListener('resize', function(){
+  canvas.width = window.innerWidth
+  canvas.height = window.innerHeight
+})
+//Circular collision
+export function Check_Circle_Rect_Collision(circ, rect){
+  if(circ.y > canvas.height){
+      circ.y -= circ.gravity
+    }
+    if(circ.y > rect.y - 47){
+      isrectcolliding = true
+    }else{
+      isrectcolliding = false
+    }
+    if(isrectcolliding){
+      circ.y -= circ.gravity
+    }
+    if(!isrectcolliding){
+      circ.gravity = circ.gravity
+    }
+}
+
+export function Check_circle_collision(circle1, circle2){
+  let iscirclecolliding = false
+  const dx = circle1.x - circle2.x
+  const dy = circle1.y - circle2.y
+  circle1.distance = Math.sqrt(dx * dx, dy * dy)
+  if(circle1.distance < circle2.raduis + circle2.raduis){
+    iscirclecolliding = true
+    }
 }
