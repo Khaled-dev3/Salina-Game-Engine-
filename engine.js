@@ -1,5 +1,6 @@
+
 export const canvas = document.getElementById('canvas')
-export const c = canvas.getContext('2d')
+export const c = canvas.getContext("2d");
   canvas.width = window.innerWidth
   canvas.height = window.innerHeight
 // mouse
@@ -45,7 +46,7 @@ document.addEventListener('keyup', function(){
   keyboard.right_key = false
   keyboard.down_key = false
 })
-// dt
+// dt (unnecessary)
 function tick() {
 var lastUpdate = Date.now();
 var now = Date.now();
@@ -65,21 +66,8 @@ export class Circluarobject{
     this.distance = distance
     this.jump = jump
   }
-  update(rectangle) {
+  update() {
     this.y += this.gravity
-    
-   /* if(this.y > platform.y){
-      this.y -= this.gravity
-      keyboard.up_key = true
-    }
-   if(keyboard.up_key){
-     up_keytime++
-     this.y -= 26
-   }
-   setInterval(1000, 5000, function(){
-     keyboard.up_key = false
-   },5000)
-   */
   }
   draw(){
     c.fillStyle = this.color
@@ -98,6 +86,20 @@ export class Circluarobject{
     if(keyboard.right_key){
       this.x += this.speed
       console.log('right')
+    }
+  }
+  add_Top_Down_Movement(){
+    if(keyboard.up_key){
+      this.y -= this.speed
+    }
+    if(keyboard.left_key){
+      this.x -= this.speed
+    }
+    if(keyboard.right_key){
+      this.x += this.speed
+    }
+    if(keyboard.down_key){
+      this.y += this.speed
     }
   }
 }
@@ -172,28 +174,47 @@ class Triangularobject{
   }
 }
 //i deeply regret that i tried to do collision (not working)
+export const collision = {
+  Circular_Collision: false,
+  Rectangular_Circular_Collision: false,
+  Rectangular_Collision: false
+}
+/*const collision = [{
+   circular: false,
+   Rectangular: false,
+   Rectangular_Circular_Collision: false
+}]
+*/
 function RectCircleColliding(circle,rect){
-    var distX = Math.abs(circle.x - rect.x-rect.w/2);
-    var distY = Math.abs(circle.y - rect.y-rect.h/2);
+    var distX = Math.abs(circle.x - rect.x-rect.width/2);
+    var distY = Math.abs(circle.y - rect.y-rect.height/2);
 
-    if (distX > (rect.w/2 + circle.r)) { return false; 
+    if (distX > (rect.width/2 + circle.raduis)) { return false; 
       console.log('yay')
     }
-    if (distY > (rect.h/2 + circle.r)) { return false; 
+    if (distY > (rect.height/2 + circle.raduis)) { return false; 
       console.log("hmmmmmmmm")
     }
 
-    if (distX <= (rect.w/2)) { return true;
+    if (distX <= (rect.width/2)) { return true;
     console.log("heeelllp")
       
     } 
-    if (distY <= (rect.h/2)) { return true; 
+    if (distY <= (rect.height/2)) { return true; 
       console.log('fuaaass')
     }
 
-    var dx=distX-rect.w/2;
-    var dy=distY-rect.h/2;
-    return (dx*dx+dy*dy<=(circle.r*circle.r));
+    var dx=distX-rect.width/2;
+    var dy=distY-rect.height/2;
+    return (dx*dx+dy*dy<=(circle.raduis*circle.raduis));
+}
+export function Check_Rectangular_Collision() {
+    if (rect1.x < rect2.x + rect2.width &&
+        rect1.x + rect1.width > rect2.x &&
+        rect1.y < rect2.y + rect2.height &&
+        rect1.height + rect1.y > rect2.y) {
+          collision.Rectangular_Collision = true
+        }
 }
 export function drawtext(text, x, y, font , color){
   c.fillStyle = color
@@ -201,16 +222,9 @@ export function drawtext(text, x, y, font , color){
   c.font = font
 }
 //sound (not working)
- function createsound(sound, source, pleay){
-  sound = new Audio()
-  sound.src = source
-  sound.play()
-}
 //deleting text (not working)
-function deletetext(sec){
-  setInterval(drawtext, sec, function(){
-    c.clearRect(0, 0, canvas.width, canvas.height)
-  })
+export function deletetext(text){
+  text = ''
 }
 //resize issues(fixed)
 window.addEventListener('resize', function(){
@@ -234,13 +248,48 @@ export function Check_Circle_Rect_Collision(circ, rect){
       circ.gravity = circ.gravity
     }
 }
-
 export function Check_circle_collision(circle1, circle2){
-  let iscirclecolliding = false
   const dx = circle1.x - circle2.x
   const dy = circle1.y - circle2.y
-  circle1.distance = Math.sqrt(dx * dx, dy * dy)
-  if(circle1.distance < circle2.raduis + circle2.raduis){
-    iscirclecolliding = true
+  circle1.distance = Math.sqrt(dx * dx + dy * dy)
+  if(circle1.distance < circle2.raduis + circle1.raduis){
+    collision.Circular_Collision = true
+    }else{
+      collision.Circular_Collision = false
     }
+}
+
+//runtime
+export let ms = 0
+export let sec = 0
+export let min = 0
+export let h = 0
+
+export function timer() {
+  ms++
+  if(ms == 50) {
+    sec += 1
+    ms = 0
+  }
+  if (sec == 60) {
+    min += 1
+    sec = 0
+  }
+  if (min == 60) {
+    h += 1
+    min = 0
+  }
+}
+export function drawtimer(x, y, font , color){
+  c.fillStyle = color
+  c.fillText(texttimer , x, y)
+  c.font = font
+}
+export function RandomColor() {
+  let letters = '0123456789ABCDEF';
+  let color = '#';
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
 }
