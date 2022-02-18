@@ -8,11 +8,11 @@ Removing text after a certain amount of time
 # How to use 
 Copy the engine.js,index.html,style.css files to your project and create an index.js file and paste this code in 
 ``` 
-import {canvas,c,mouse, keyboard,Circluarobject, Rectangularobject, drawtext} from './engine.js'
+import * as Kegfw from './engine.js'
  
-canvas.width = window.innerWidth
 
-canvas.height = window.innerHeight
+
+
 //type your code here 
 
 
