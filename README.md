@@ -1,4 +1,4 @@
-# kegfw
+# What is Salina
 A JavaScript game framework for drawing shapes/sprites and audio and text etc...
 # Things to add 
 A tutorial 
@@ -8,7 +8,7 @@ Removing text after a certain amount of time
 # How to use 
 Copy the engine.js,index.html,style.css files to your project and create an index.js file and paste this code in 
 ``` 
-import * as Kegfw from './engine.js'
+import * as Salina from './engine.js'
  
 
 
@@ -20,7 +20,7 @@ import * as Kegfw from './engine.js'
 
 function animate(){
 
-  c.clearRect(0, 0, canvas.width, canvas.height)
+ Salina.c.clearRect(0, 0, canvas.width, canvas.height)
   requestAnimationFrame(animate)
 
 }
