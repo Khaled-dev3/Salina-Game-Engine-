@@ -13,6 +13,7 @@ canvas.addEventListener('mousedown', function(e){
   mouse.x = e.x
   mouse.y = e.y
   mouse.click = true
+  console.log(mouse.x, mouse.y)
 })
 canvas.addEventListener('mouseup', function(){
   mouse.click = false
@@ -113,7 +114,7 @@ export class Rectangularobject{
     this.color = color
     this.speed = speed
     this.gravity = gravity
-    this.jump = jump 
+    this.jump = jump
   }
   update() {
     this.y += this.gravity
@@ -126,7 +127,7 @@ export class Rectangularobject{
     c.closePath()
   }
   add_platformer_movement(){
-    if(keyboard.up_key){
+    if(keyboard.up_key && is_ground){
       this.y -= this.jump
     }
     if(keyboard.left_key){
@@ -208,12 +209,14 @@ function RectCircleColliding(circle,rect){
     var dy=distY-rect.height/2;
     return (dx*dx+dy*dy<=(circle.raduis*circle.raduis));
 }
-export function Check_Rectangular_Collision() {
+let is_ground = false
+export function Check_Rectangular_Collision(rect1, rect2) {
     if (rect1.x < rect2.x + rect2.width &&
         rect1.x + rect1.width > rect2.x &&
         rect1.y < rect2.y + rect2.height &&
         rect1.height + rect1.y > rect2.y) {
-          collision.Rectangular_Collision = true
+          rect2.y = rect1.y - rect2.height
+          is_ground = true
         }
 }
 export function drawtext(text, x, y, font , color){
@@ -221,33 +224,19 @@ export function drawtext(text, x, y, font , color){
   c.fillText(text, x, y)
   c.font = font
 }
-//sound (not working)
+
 //deleting text (not working)
 export function deletetext(text){
   text = ''
 }
+
 //resize issues(fixed)
 window.addEventListener('resize', function(){
   canvas.width = window.innerWidth
   canvas.height = window.innerHeight
 })
+
 //Circular collision
-export function Check_Circle_Rect_Collision(circ, rect){
-  if(circ.y > canvas.height){
-      circ.y -= circ.gravity
-    }
-    if(circ.y > rect.y - 47){
-      isrectcolliding = true
-    }else{
-      isrectcolliding = false
-    }
-    if(isrectcolliding){
-      circ.y -= circ.gravity
-    }
-    if(!isrectcolliding){
-      circ.gravity = circ.gravity
-    }
-}
 export function Check_circle_collision(circle1, circle2){
   const dx = circle1.x - circle2.x
   const dy = circle1.y - circle2.y
@@ -280,11 +269,15 @@ export function timer() {
     min = 0
   }
 }
+
+
 export function drawtimer(x, y, font , color){
   c.fillStyle = color
   c.fillText(texttimer , x, y)
   c.font = font
 }
+
+
 export function RandomColor() {
   let letters = '0123456789ABCDEF';
   let color = '#';
@@ -292,4 +285,59 @@ export function RandomColor() {
     color += letters[Math.floor(Math.random() * 16)];
   }
   return color;
+}
+
+//button
+let OnClick = false
+export class Button{
+   constructor(x, y, width, height, background_color, stroke_color, btn_txt, txt_color){
+      this.x = x
+      this.y = y
+      this.width = width
+      this.height = height
+      this.background_color = background_color
+      this.stroke_color = stroke_color
+      this.btn_txt = btn_txt
+      this.txt_color = txt_color
+   }
+   
+   draw(){
+     c.fillStyle = this.background_color
+     c.strokeStyle = this.stroke_color
+     c.beginPath()
+     c.fillRect(this.x, this.y, this.width, this.height)
+     c.strokeWidth = 6
+     c.stroke()
+   }
+   
+   drawtxt(){
+     c.fillStyle = this.txt_color
+     c.fillText(this.btn_txt, this.x + this.width/2, this.y + this.height/2)
+   }
+   
+   ListenToClick() {
+     if(mouse.x == this.x || this.x + this.width)
+     {
+       OnClick = true
+     } 
+     else
+     {
+       return 1
+     }
+   }
+}
+
+//sound
+export class Sound {
+   constructor(source) {
+     this.self = new Audio(source)
+   }
+   
+   play() {
+     this.self.play()
+   }
+   
+   stop() {
+     this.self.stop()
+   }
 }
