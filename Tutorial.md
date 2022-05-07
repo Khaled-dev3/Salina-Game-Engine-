@@ -3,7 +3,9 @@
 # 1-1: Circles
 if you want to draw a circle first of all your going to create the circle object by typing
 ```
-let Circle = new Salina.Circluarobject(x,y, radius,speed, gravity,"color", distance, jump)
+import {Circle} from "/Salina-engine/Circle.js"
+
+let Circle = new Salina.Circle(x,y, radius,speed, gravity,"color", distance, jump)
 ```
 you can name the Circle object whatever you want
 after you set the x,y, radius,speed, gravity,"color",distance,jump values to whatever you want
@@ -35,7 +37,9 @@ animate()
 # 1-2: Rectangles 
 if you want to draw a Rectangles you're going to creat the Rectangle object by typing
 ```
-let Rectangle = new Salina.Rectangularobject(x,y,width,height,"color", speed, gravity, jump)
+import {Rectangle} from "/Salina-engine/Rectangle.js"
+
+let rectangle = new Salina.Rectangle(x,y,width,height,"color", speed, gravity, jump)
 ```
 you can name the Rectangle object whatever you want after you set the x,y, width, height,"color", speed, gravity, jump values to whatever you want 
 you need to go to the animate function and type
@@ -44,7 +48,7 @@ function animate(){
 
   c.clearRect(0, 0, canvas.width, canvas.height)
   requestAnimationFrame(animate)
-  Rectangle.draw()
+  rectangle.draw()
 }
 
 animate()
@@ -57,8 +61,8 @@ function animate(){
 
   c.clearRect(0, 0, canvas.width, canvas.height)
   requestAnimationFrame(animate)
-  Rectangle.draw()
-  Rectangle.update()
+  rectangle.draw()
+  rectangle.update()
 }
 
 animate()
@@ -67,7 +71,9 @@ animate()
 # 2-1: Displaying Text
 if you want to display text in your project just type in/outside of the animate function
 ```
-Salina.drawtext("text",x,y, "font", "color")
+import {drawText} from "/Salina-engine/Text.js"
+
+drawtext("text",x,y, "font", "color")
 ```
 # 2-2: Fonts
 First of all you need to download the font you like from any website
@@ -81,7 +87,7 @@ to declare fonts you need to go to the Style.css file and type inside it
 ```
 and to apply it to a text type
 ```
-Salina.drawtext("text", x, y, "the font you added", "color")
+drawtext("text", x, y, "the font you added", "color")
 ```
 # 3: Movement
 # 3-1: Platformer Movement
@@ -116,8 +122,15 @@ animate()
 # 4: Random colors
 if you want to set a random color lets say to a circle you would type 
 ```
-const Circle = new Salina.Circluarobject(60,40, 30,10, 16, Salina.RandomColor(), undefined, 20)
+import {RandomColor} from "/Salina-engine/Color.js"
+
+const circle = new Circle(60,40, 30,10, 16, RandomColor(), undefined, 20)
 ```
+
+# This Part of the tutorial is not finished yet
+
+## So don't follow it
+
 this applys to squares
 # 5: Collision
 # 5-1: Collision between Circles
